@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  django-app:
+    container_name: djangoapp
+    build:
+      context: .
+      # dockerfile: ./Dockerfire
+    ports:
+    - 8000:8000
+    volumes:
+    - ./djangoapp:/djangoapp
+    - ./data/web/static:/data/web/static/
+    - ./data/web/media:/data/web/media/
+    env_file:
+    - ./dotenv_files/.env
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1G
+      restart_policy:
+        condition: on-failure
+    depends_on:
+    - postgres
+
+  postgres:
+    container_name: postgres-db
+    image: postgres:17.0-alpine3.20
+    volumes:
+    - ./data/postgres/data:/var/lib/postgresql/data/
+    env_file:
+    - ./dotenv_files/.env
