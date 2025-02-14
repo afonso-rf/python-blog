@@ -1,5 +1,6 @@
 from django.db import models
 
+from utils.model_validators import validate_png
 
 # Create your models here.
 class MenuLink(models.Model):
@@ -39,6 +40,7 @@ class SiteSetup(models.Model):
         upload_to="assets/favicon/%Y/%m",
         blank=True,
         default="",
+        validators=[validate_png],
     )
     
     def __str__(self):
